@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico de Radar com Média Móvel</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #343a40;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <canvas id="radarChart" width="800" height="400"></canvas>
+  </div>
+
+  <script>
+    const ctxRadar = document.getElementById('radarChart').getContext('2d');
+    const radarData = [12, 19, 3, 5, 2, 3, 12];
+    const labels = ['Aspecto 1', 'Aspecto 2', 'Aspecto 3', 'Aspecto 4', 'Aspecto 5', 'Aspecto 6', 'Aspecto 7'];
+
+    const radarChartData = {
+      labels: labels,
+      datasets: [{
+        label: 'Dados Originais',
+        data: radarData,
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true
+      }]
+    };
+
+    const radarChart = new Chart(ctxRadar, {
+      type: 'radar',
+      data: radarChartData,
+      options: {
+        plugins: {
+          legend: {
+            display: true
+          }
+        },
+        scales: {
+          r: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    function calculateMovingAverage(data, period) {
+      let movingAverage = [];
+      for (let i = 0; i < data.length; i++) {
+        if (i < period - 1) {
+          movingAverage.push(null);
+        } else {
+          const sum = data.slice(i - period + 1, i + 1).reduce((a, b) => a + b, 0);
+          movingAverage.push(sum / period);
+        }
+      }
+      return movingAverage;
+    }
+
+    const movingAverageRadarData = calculateMovingAverage(radarData, 3);
+
+    radarChartData.datasets.push({
+      label: 'Média Móvel (3 pontos)',
+      data: movingAverageRadarData,
+      borderColor: 'rgba(255, 99, 132, 1)',
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      fill: true
+    });
+
+    radarChart.update();
+  </script>
+</body>
+</html>

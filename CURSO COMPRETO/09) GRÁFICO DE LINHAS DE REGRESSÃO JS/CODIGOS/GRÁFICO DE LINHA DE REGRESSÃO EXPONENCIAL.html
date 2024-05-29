@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico de Linha de Regressão Exponencial</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 50%; margin: auto;">
+    <canvas id="exponentialRegressionChart" width="400" height="200"></canvas>
+  </div>
+
+  <script>
+    const ctxExponentialRegression = document.getElementById('exponentialRegressionChart').getContext('2d');
+
+    // Dados de exemplo
+    const data = {
+      labels: [1, 2, 3, 4, 5],
+      datasets: [{
+        label: 'Data',
+        data: [1, 3, 2, 4, 5],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+        tension: 0
+      }]
+    };
+
+    // Calculando a linha de regressão exponencial
+    const x = data.labels;
+    const y = data.datasets[0].data;
+    const regression = exponentialRegression(x, y);
+
+    // Adicionando os pontos da linha de regressão aos dados
+    const regressionData = [];
+    for (let i = 0; i < x.length; i++) {
+      regressionData.push(regression.a * Math.exp(regression.b * x[i]));
+    }
+
+    // Adicionando a linha de regressão aos dados
+    data.datasets.push({
+      label: 'Regression Line',
+      data: regressionData,
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 1,
+      type: 'line',
+      fill: false
+    });
+
+    // Criando o gráfico
+    const exponentialRegressionChart = new Chart(ctxExponentialRegression, {
+      type: 'line',
+      data: data
+    });
+
+    // Função para calcular a linha de regressão exponencial
+    function exponentialRegression(x, y) {
+      const n = x.length;
+      let sumX = 0;
+      let sumYLog = 0;
+      let sumX2 = 0;
+      let sumXYLog = 0;
+      for (let i = 0; i < n; i++) {
+        sumX += x[i];
+        sumYLog += Math.log(y[i]);
+        sumX2 += x[i] ** 2;
+        sumXYLog += x[i] * Math.log(y[i]);
+      }
+      const b = (n * sumXYLog - sumX * sumYLog) / (n * sumX2 - sumX ** 2);
+      const a = Math.exp((sumYLog - b * sumX) / n);
+      return { a, b };
+    }
+  </script>
+</body>
+</html>

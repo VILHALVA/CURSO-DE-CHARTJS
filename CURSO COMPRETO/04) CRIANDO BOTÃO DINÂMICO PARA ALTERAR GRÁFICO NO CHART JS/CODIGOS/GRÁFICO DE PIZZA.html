@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Pie Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="pieChart" width="400" height="400"></canvas>
+  <button onclick="updateData()">Update Data</button>
+
+  <script>
+    function createChart() {
+      const ctx = document.getElementById('pieChart').getContext('2d');
+      window.myPie = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Red', 'Blue', 'Yellow'],
+          datasets: [{
+            label: 'Data',
+            data: [300, 50, 100],
+            backgroundColor: ['red', 'blue', 'yellow']
+          }]
+        }
+      });
+    }
+
+    function updateData() {
+      const newData = Array.from({ length: 3 }, () => Math.floor(Math.random() * 500));
+      window.myPie.data.datasets[0].data = newData;
+      window.myPie.update();
+    }
+
+    createChart();
+  </script>
+</body>
+</html>

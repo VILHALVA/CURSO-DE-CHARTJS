@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grouped Bar Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="barChart" width="800" height="400"></canvas>
+  <button onclick="changeData()">Change Data</button>
+  <script>
+    let barChart;
+
+    function createChart() {
+      const ctx = document.getElementById('barChart').getContext('2d');
+      barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['A', 'B', 'C'],
+          datasets: [{
+            label: 'Data 1',
+            data: [10, 20, 30],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    function changeData() {
+      const newData = [];
+      for (let i = 0; i < 3; i++) {
+        newData.push(Math.floor(Math.random() * 50));
+      }
+      barChart.data.datasets[0].data = newData;
+      barChart.update();
+    }
+
+    createChart();
+  </script>
+</body>
+</html>

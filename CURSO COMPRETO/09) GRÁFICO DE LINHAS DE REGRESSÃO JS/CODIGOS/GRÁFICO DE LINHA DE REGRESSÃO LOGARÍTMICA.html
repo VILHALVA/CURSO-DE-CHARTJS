@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico de Linha de Regressão Logarítmica</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 50%; margin: auto;">
+    <canvas id="logarithmicRegressionChart" width="400" height="200"></canvas>
+  </div>
+
+  <script>
+    const ctxLogarithmicRegression = document.getElementById('logarithmicRegressionChart').getContext('2d');
+
+    // Dados de exemplo
+    const data = {
+      labels: [1, 2, 3, 4, 5],
+      datasets: [{
+        label: 'Data',
+        data: [1, 3, 2, 4, 5],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+        tension: 0
+      }]
+    };
+
+    // Calculando a linha de regressão logarítmica
+    const x = data.labels;
+    const y = data.datasets[0].data;
+    const regression = logarithmicRegression(x, y);
+
+    // Adicionando os pontos da linha de regressão aos dados
+    const regressionData = [];
+    for (let i = 0; i < x.length; i++) {
+      regressionData.push(regression.a * Math.log(x[i]) + regression.b);
+    }
+
+    // Adicionando a linha de regressão aos dados
+    data.datasets.push({
+      label: 'Regression Line',
+      data: regressionData,
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 1,
+      type: 'line',
+      fill: false
+    });
+
+    // Criando o gráfico
+    const logarithmicRegressionChart = new Chart(ctxLogarithmicRegression, {
+      type: 'line',
+      data: data
+    });
+
+    // Função para calcular a linha de regressão logarítmica
+    function logarithmicRegression(x, y) {
+      const n = x.length;
+      let sumXLog = 0;
+      let sumY = 0;
+      let sumXY = 0;
+      let sumLogX2 = 0;
+      for (let i = 0; i < n; i++) {
+        sumXLog += Math.log(x[i]);
+        sumY += y[i];
+        sumXY += Math.log(x[i]) * y[i];
+        sumLogX2 += Math.log(x[i]) ** 2;
+      }
+      const a = (n * sumXY - sumXLog * sumY) / (n * sumLogX2 - sumXLog ** 2);
+      const b = (sumY - a * sumXLog) / n;
+      return { a, b };
+    }
+  </script>
+</body>
+</html>

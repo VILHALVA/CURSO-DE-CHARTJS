@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Radar Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="radarChart" width="800" height="400"></canvas>
+  <button onclick="changeData(chart4)">Change Data</button>
+
+  <script>
+    const ctx4 = document.getElementById('radarChart').getContext('2d');
+    const chart4 = new Chart(ctx4, {
+      type: 'radar',
+      data: {
+        labels: ['Sales', 'Marketing', 'Development', 'Customer Support', 'Finance'],
+        datasets: [{
+          label: 'Team A',
+          data: [20, 30, 40, 50, 60],
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          r: {
+            suggestedMin: 0,
+            suggestedMax: 100
+          }
+        }
+      }
+    });
+
+    function changeData(chart) {
+      const newData = [Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100];
+      chart.data.datasets[0].data = newData;
+      chart.update();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Legend - Radar Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #343a40;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .legend-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .legend-item {
+      margin-right: 15px;
+      display: flex;
+      align-items: center;
+    }
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <canvas id="radarChart" width="800" height="400"></canvas>
+    <div id="legend-radar" class="legend-container"></div>
+  </div>
+
+  <script>
+    const ctxRadar = document.getElementById('radarChart').getContext('2d');
+    const radarChartData = {
+      labels: ['Sales', 'Marketing', 'Development', 'Customer Support', 'Finance'],
+      datasets: [{
+        label: 'Team A',
+        data: [20, 30, 40, 50, 60],
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      }, {
+        label: 'Team B',
+        data: [40, 50, 60, 70, 80],
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    };
+
+    const radarChart = new Chart(ctxRadar, {
+      type: 'radar',
+      data: radarChartData,
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          r: {
+            angleLines: {
+              display: false
+            },
+            suggestedMin: 0,
+            suggestedMax: 100
+          }
+        }
+      }
+    });
+
+    createCustomLegend(radarChart, 'legend-radar');
+
+    function createCustomLegend(chart, legendId) {
+      const legendContainer = document.getElementById(legendId);
+      const { data } = chart;
+      const { datasets } = data;
+
+      datasets.forEach((dataset, datasetIndex) => {
+        const legendItem = document.createElement('div');
+        legendItem.classList.add('legend-item');
+
+        const colorBox = document.createElement('div');
+        colorBox.classList.add('legend-color');
+        colorBox.style.backgroundColor = dataset.backgroundColor[0];
+
+        const label = document.createElement('span');
+        label.textContent = dataset.label;
+
+        legendItem.appendChild(colorBox);
+        legendItem.appendChild(label);
+        legendContainer.appendChild(legendItem);
+
+        legendItem.addEventListener('click', () => {
+          const meta = chart.getDatasetMeta(datasetIndex);
+          meta.hidden = !meta.hidden;
+          chart.update();
+        });
+      });
+    }
+  </script>
+</body>
+</html>

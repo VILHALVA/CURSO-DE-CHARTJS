@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico de Barras com Média Móvel</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #343a40;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <canvas id="barChart" width="800" height="400"></canvas>
+  </div>
+
+  <script>
+    const ctxBar = document.getElementById('barChart').getContext('2d');
+    const barData = [12, 19, 3, 5, 2, 3, 12, 15, 13, 16, 10, 8];
+    const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    const barChartData = {
+      labels: labels,
+      datasets: [{
+        label: 'Original Data',
+        data: barData,
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    };
+
+    const barChart = new Chart(ctxBar, {
+      type: 'bar',
+      data: barChartData,
+      options: {
+        plugins: {
+          legend: {
+            display: true
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    function calculateMovingAverage(data, period) {
+      let movingAverage = [];
+      for (let i = 0; i < data.length; i++) {
+        if (i < period - 1) {
+          movingAverage.push(null);
+        } else {
+          const sum = data.slice(i - period + 1, i + 1).reduce((a, b) => a + b, 0);
+          movingAverage.push(sum / period);
+        }
+      }
+      return movingAverage;
+    }
+
+    const movingAverageBarData = calculateMovingAverage(barData, 3);
+
+    barChartData.datasets.push({
+      label: 'Moving Average (3 points)',
+      data: movingAverageBarData,
+      type: 'line',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      fill: false
+    });
+
+    barChart.update();
+  </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Legend - Pie Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #343a40;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .legend-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .legend-item {
+      margin-right: 15px;
+      display: flex;
+      align-items: center;
+    }
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <canvas id="pieChart" width="800" height="400"></canvas>
+    <div id="legend-pie" class="legend-container"></div>
+  </div>
+
+  <script>
+    const ctxPie = document.getElementById('pieChart').getContext('2d');
+    const pieChartData = {
+      labels: ['Red', 'Blue', 'Yellow'],
+      datasets: [{
+        data: [10, 20, 30],
+        backgroundColor: ['red', 'blue', 'yellow']
+      }]
+    };
+
+    const pieChart = new Chart(ctxPie, {
+      type: 'pie',
+      data: pieChartData,
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+
+    createCustomLegend(pieChart, 'legend-pie');
+  </script>
+</body>
+</html>

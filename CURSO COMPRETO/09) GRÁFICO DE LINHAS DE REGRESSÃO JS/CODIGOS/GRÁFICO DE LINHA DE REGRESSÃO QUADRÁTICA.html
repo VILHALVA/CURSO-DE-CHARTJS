@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico de Linha de Regressão Quadrática</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 50%; margin: auto;">
+    <canvas id="quadraticRegressionChart" width="400" height="200"></canvas>
+  </div>
+
+  <script>
+    const ctxQuadraticRegression = document.getElementById('quadraticRegressionChart').getContext('2d');
+
+    // Dados de exemplo
+    const data = {
+      labels: [1, 2, 3, 4, 5],
+      datasets: [{
+        label: 'Data',
+        data: [1, 3, 2, 4, 5],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+        tension: 0
+      }]
+    };
+
+    // Calculando a linha de regressão quadrática
+    const x = data.labels;
+    const y = data.datasets[0].data;
+    const regression = quadraticRegression(x, y);
+
+    // Adicionando os pontos da linha de regressão aos dados
+    const regressionData = [];
+    for (let i = 0; i < x.length; i++) {
+      regressionData.push(regression.a * x[i] ** 2 + regression.b * x[i] + regression.c);
+    }
+
+    // Adicionando a linha de regressão aos dados
+    data.datasets.push({
+      label: 'Regression Line',
+      data: regressionData,
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 1,
+      type: 'line',
+      fill: false
+    });
+
+    // Criando o gráfico
+    const quadraticRegressionChart = new Chart(ctxQuadraticRegression, {
+      type: 'line',
+      data: data
+    });
+
+    // Função para calcular a linha de regressão quadrática
+    function quadraticRegression(x, y) {
+      const n = x.length;
+      const sumX = x.reduce((acc, val) => acc + val, 0);
+      const sumY = y.reduce((acc, val) => acc + val, 0);
+      const sumX2 = x.reduce((acc, val) => acc + val ** 2, 0);
+      const sumX3 = x.reduce((acc, val) => acc + val ** 3, 0);
+      const sumX4 = x.reduce((acc, val) => acc + val ** 4, 0);
+      const sumXY = x.reduce((acc, val, idx) => acc + val * y[idx], 0);
+      const sumX2Y = x.reduce((acc, val, idx) => acc + val ** 2 * y[idx], 0);
+      const a = (sumY * sumX2 - sumX * sumXY) / (n * sumX2 - sumX ** 2);
+      const b = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX ** 2);
+      const c = (sumX2Y - a * sumX2 - b * sumX) / n;
+      return { a, b, c };
+    }
+  </script>
+</body>
+</html>

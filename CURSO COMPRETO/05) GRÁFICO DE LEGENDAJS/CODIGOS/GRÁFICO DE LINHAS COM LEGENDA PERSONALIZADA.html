@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Legend - Line Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #343a40;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .legend-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .legend-item {
+      margin-right: 15px;
+      display: flex;
+      align-items: center;
+    }
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <canvas id="lineChart" width="800" height="400"></canvas>
+    <div id="legend-line" class="legend-container"></div>
+  </div>
+
+  <script>
+    const ctxLine = document.getElementById('lineChart').getContext('2d');
+    const lineChartData = {
+      labels: ['January', 'February', 'March'],
+      datasets: [{
+        label: 'Dataset 1',
+        data: [10, 20, 30],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true
+      }]
+    };
+
+    const lineChart = new Chart(ctxLine, {
+      type: 'line',
+      data: lineChartData,
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+
+    createCustomLegend(lineChart, 'legend-line');
+  </script>
+</body>
+</html>

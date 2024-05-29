@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico de Radar com Tabela HTML</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 50%; margin: auto;">
+    <canvas id="radarChart" width="400" height="200"></canvas>
+    <table border="1" style="margin-top: 20px;">
+      <thead>
+        <tr>
+          <th>Aspect</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody id="radarTableBody">
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const ctxRadar = document.getElementById('radarChart').getContext('2d');
+    const radarData = {
+      labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
+      datasets: [{
+        label: 'My Radar Chart',
+        data: [65, 59, 90, 81, 56, 55, 40],
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgb(255, 99, 132)',
+        pointBackgroundColor: 'rgb(255, 99, 132)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgb(255, 99, 132)'
+      }]
+    };
+
+    const radarChart = new Chart(ctxRadar, {
+      type: 'radar',
+      data: radarData,
+    });
+
+    const radarTableBody = document.getElementById('radarTableBody');
+    radarData.labels.forEach((label, index) => {
+      const row = document.createElement('tr');
+      const labelCell = document.createElement('td');
+      labelCell.textContent = label;
+      const valueCell = document.createElement('td');
+      valueCell.textContent = radarData.datasets[0].data[index];
+      row.appendChild(labelCell);
+      row.appendChild(valueCell);
+      radarTableBody.appendChild(row);
+    });
+  </script>
+</body>
+</html>

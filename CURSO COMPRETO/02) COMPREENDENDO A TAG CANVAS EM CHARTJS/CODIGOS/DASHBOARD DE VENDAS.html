@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 50%; margin: auto;">
+    <canvas id="salesChart" width="400" height="300"></canvas>
+  </div>
+  <div style="width: 50%; margin: auto;">
+    <canvas id="distributionChart" width="400" height="300"></canvas>
+  </div>
+  <script>
+    const salesCtx = document.getElementById('salesChart').getContext('2d');
+    const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+
+    const salesChart = new Chart(salesCtx, {
+      type: 'line',
+      data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        datasets: [{
+          label: 'Sales',
+          data: [65, 59, 80, 81, 56, 55],
+          borderColor: 'rgb(75, 192, 192)',
+          fill: false,
+          tension: 0.1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+    const distributionChart = new Chart(distributionCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Electronics', 'Clothing', 'Books'],
+        datasets: [{
+          label: 'Distribution',
+          data: [40, 30, 30],
+          backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(54, 162, 235)',
+            'rgb(255, 205, 86)'
+          ]
+        }]
+      }
+    });
+  </script>
+</body>
+</html>

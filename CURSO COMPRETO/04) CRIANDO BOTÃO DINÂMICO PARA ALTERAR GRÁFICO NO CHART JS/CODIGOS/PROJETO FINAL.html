@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Charts with Chart.js and Bootstrap</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #343a40;
+      color: white;
+    }
+    .chart-container {
+      margin: 20px 0;
+    }
+    .btn-custom {
+      background-color: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center my-4">Dynamic Charts with Chart.js and Bootstrap</h1>
+    
+    <div class="chart-container">
+      <canvas id="barChart" width="800" height="400"></canvas>
+      <button class="btn btn-custom" onclick="changeBarData()">Change Bar Data</button>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="lineChart" width="800" height="400"></canvas>
+      <button class="btn btn-custom" onclick="changeLineData()">Change Line Data</button>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="pieChart" width="800" height="400"></canvas>
+      <button class="btn btn-custom" onclick="changePieData()">Change Pie Data</button>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="radarChart" width="800" height="400"></canvas>
+      <button class="btn btn-custom" onclick="changeRadarData()">Change Radar Data</button>
+    </div>
+  </div>
+
+  <script>
+    // Função para criar o gráfico de barras
+    function createBarChart() {
+      const ctx = document.getElementById('barChart').getContext('2d');
+      return new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['A', 'B', 'C'],
+          datasets: [{
+            label: 'Data 1',
+            data: [10, 20, 30],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    // Função para criar o gráfico de linhas
+    function createLineChart() {
+      const ctx = document.getElementById('lineChart').getContext('2d');
+      return new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['January', 'February', 'March'],
+          datasets: [{
+            label: 'Data 1',
+            data: [10, 20, 30],
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }]
+        }
+      });
+    }
+
+    // Função para criar o gráfico de pizza
+    function createPieChart() {
+      const ctx = document.getElementById('pieChart').getContext('2d');
+      return new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Red', 'Blue', 'Yellow'],
+          datasets: [{
+            data: [10, 20, 30],
+            backgroundColor: ['red', 'blue', 'yellow']
+          }]
+        }
+      });
+    }
+
+    // Função para criar o gráfico de radar
+    function createRadarChart() {
+      const ctx = document.getElementById('radarChart').getContext('2d');
+      return new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels: ['Sales', 'Marketing', 'Development', 'Customer Support', 'Finance'],
+          datasets: [{
+            label: 'Team A',
+            data: [20, 30, 40, 50, 60],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            r: {
+              suggestedMin: 0,
+              suggestedMax: 100
+            }
+          }
+        }
+      });
+    }
+
+    // Inicializa todos os gráficos
+    const barChart = createBarChart();
+    const lineChart = createLineChart();
+    const pieChart = createPieChart();
+    const radarChart = createRadarChart();
+
+    // Funções para alterar os dados dos gráficos
+    function changeBarData() {
+      barChart.data.datasets[0].data = [Math.random() * 50, Math.random() * 50, Math.random() * 50];
+      barChart.update();
+    }
+
+    function changeLineData() {
+      lineChart.data.datasets[0].data = [Math.random() * 50, Math.random() * 50, Math.random() * 50];
+      lineChart.update();
+    }
+
+    function changePieData() {
+      pieChart.data.datasets[0].data = [Math.random() * 50, Math.random() * 50, Math.random() * 50];
+      pieChart.update();
+    }
+
+    function changeRadarData() {
+      radarChart.data.datasets[0].data = [Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100];
+      radarChart.update();
+    }
+  </script>
+</body>
+</html>

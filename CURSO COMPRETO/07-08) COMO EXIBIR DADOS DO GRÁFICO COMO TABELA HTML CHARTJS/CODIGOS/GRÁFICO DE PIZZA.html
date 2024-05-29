@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráfico de Pizza com Tabela HTML</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 50%; margin: auto;">
+    <canvas id="pieChart" width="400" height="200"></canvas>
+    <table border="1" style="margin-top: 20px;">
+      <thead>
+        <tr>
+          <th>Label</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody id="pieTableBody">
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const ctxPie = document.getElementById('pieChart').getContext('2d');
+    const pieData = {
+      labels: ['Red', 'Blue', 'Yellow'],
+      datasets: [{
+        label: 'Votes',
+        data: [300, 50, 100],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)'
+        ],
+        borderWidth: 1
+      }]
+    };
+
+    const pieChart = new Chart(ctxPie, {
+      type: 'pie',
+      data: pieData,
+    });
+
+    const pieTableBody = document.getElementById('pieTableBody');
+    pieData.labels.forEach((label, index) => {
+      const row = document.createElement('tr');
+      const labelCell = document.createElement('td');
+      labelCell.textContent = label;
+      const valueCell = document.createElement('td');
+      valueCell.textContent = pieData.datasets[0].data[index];
+      row.appendChild(labelCell);
+      row.appendChild(valueCell);
+      pieTableBody.appendChild(row);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Legend - Bar Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #343a40;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .legend-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .legend-item {
+      margin-right: 15px;
+      display: flex;
+      align-items: center;
+    }
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <canvas id="barChart" width="800" height="400"></canvas>
+    <div id="legend-bar" class="legend-container"></div>
+  </div>
+
+  <script>
+    const ctxBar = document.getElementById('barChart').getContext('2d');
+    const barChartData = {
+      labels: ['Red', 'Blue', 'Yellow'],
+      datasets: [{
+        label: 'Dataset 1',
+        data: [10, 20, 30],
+        backgroundColor: ['red', 'blue', 'yellow']
+      }]
+    };
+
+    const barChart = new Chart(ctxBar, {
+      type: 'bar',
+      data: barChartData,
+      options: {
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+
+    function createCustomLegend(chart, legendId) {
+      const legendContainer = document.getElementById(legendId);
+      const { data } = chart;
+      const { datasets } = data;
+
+      datasets.forEach((dataset, datasetIndex) => {
+        dataset.data.forEach((dataPoint, index) => {
+          const legendItem = document.createElement('div');
+          legendItem.classList.add('legend-item');
+
+          const colorBox = document.createElement('div');
+          colorBox.classList.add('legend-color');
+          colorBox.style.backgroundColor = dataset.backgroundColor[index];
+
+          const label = document.createElement('span');
+          label.textContent = data.labels[index];
+
+          legendItem.appendChild(colorBox);
+          legendItem.appendChild(label);
+          legendContainer.appendChild(legendItem);
+
+          legendItem.addEventListener('click', () => {
+            const meta = chart.getDatasetMeta(datasetIndex);
+            const item = meta.data[index];
+            item.hidden = !item.hidden;
+            chart.update();
+          });
+        });
+      });
+    }
+
+    createCustomLegend(barChart, 'legend-bar');
+  </script>
+</body>
+</html>
